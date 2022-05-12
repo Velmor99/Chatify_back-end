@@ -32,7 +32,7 @@ module.exports = class ServerAPI {
     this.socketServer = http.createServer(this.server);
     this.io = new Server(this.socketServer, {
       cors: {
-        origin: "http://localhost:3001",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
       },
     });
@@ -74,7 +74,9 @@ module.exports = class ServerAPI {
       });
 
       socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data);
+        // console.log(data.letter)
+        // socket.to(data.room).emit("receive_message", data);
+        socket.emit("receive_message", data)
       });
     });
     //
