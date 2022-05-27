@@ -36,6 +36,7 @@ const user = new Schema({
     required: true,
     default: "light",
   },
+  conversations: [{type: Object, ref: "Conversation"}],
   token: String,
 });
 

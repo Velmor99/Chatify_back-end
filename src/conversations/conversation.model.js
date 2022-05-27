@@ -9,6 +9,10 @@ const Conversation = new Schema(
     members: {
       type: Array,
     },
+    //todo либо хранить тут id либо искать по IDconversation и сортировать по дате
+    messages: [{ type: ObjectId, ref: "Messages"}],
+    lastMessage: { type: String, default: "" },
+    isRead: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

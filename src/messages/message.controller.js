@@ -1,5 +1,6 @@
 const MessageModel = require("./message.model");
-const io = require("socket.io")
+const ConversationModel = require("../conversations/conversation.model");
+// const io = require("socket.io")
 
 class MessageController {
   // async connectToRoom(req, res, next) {
@@ -18,7 +19,7 @@ class MessageController {
   //  })
 
   //   } catch (error) {
-      
+
   //   }
   // }
 
@@ -26,6 +27,14 @@ class MessageController {
     try {
       const newMessage = new MessageModel(req.body);
       const saveMessage = await newMessage.save();
+      const conversation = await ConversationModel.findById(
+        req.body.conversationId
+      );
+      //todo проверка на наличие диалога
+      console.log(conversation)
+      conversation.lastMessage = req.body.text;
+      conversation.messages.push(saveMessage._id)
+      conversation.save();
       res.status(200).json(saveMessage);
     } catch (error) {
       next(error);

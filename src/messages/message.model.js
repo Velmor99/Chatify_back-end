@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const Message = new Schema(
   {
+    //либо хранить тут IDconversation либо все месседжи будут храниться в conversation
     conversationId: {
       type: String,
     },

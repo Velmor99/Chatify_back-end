@@ -14,7 +14,7 @@ const MONGODB_URL = process.env.MONGODB_URL;
 module.exports = class ServerAPI {
   constructor() {
     this.server = null;
-    this.socketServer = null;
+    this.httpServer = null;
     this.io = null;
   }
 
@@ -29,10 +29,10 @@ module.exports = class ServerAPI {
   initServer() {
     this.server = express();
     //
-    this.socketServer = http.createServer(this.server);
-    this.io = new Server(this.socketServer, {
+    this.httpServer = http.createServer(this.server);
+    this.io = new Server(this.httpServer, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
         methods: ["GET", "POST"],
       },
     });
@@ -70,17 +70,16 @@ module.exports = class ServerAPI {
       console.log(`User Connected: ${socket.id}`);
 
       socket.on("join_room", (data) => {
-        socket.join(data);
+        socket.join(JSON.parse(data.room));
       });
 
       socket.on("send_message", (data) => {
-        // console.log(data.letter)
-        // socket.to(data.room).emit("receive_message", data);
+        socket.broadcast.emit("receive_message", data)
         socket.emit("receive_message", data)
       });
     });
     //
-    this.socketServer.listen(PORT, () => {
+    this.httpServer.listen(PORT, () => {
       console.log("Server started listening on port", PORT);
     });
   }

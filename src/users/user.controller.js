@@ -31,6 +31,14 @@ class UserController {
     }
   }
 
+  // async getAllConversationsCurrentUser(req, res, next) {
+  //   try {
+      
+  //   } catch (error) {
+  //     next(err)
+  //   }
+  // }
+
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
@@ -42,6 +50,10 @@ class UserController {
       if (!isPasswordValid) {
         return res.send({ message: "Wrong password" }).status(401);
       }
+      // console.log(user)
+      // const populated = await user.populate("conversations")
+      //todo разобраться почему возвращает undefined
+      // console.log(populated.conversations.members)
       res.send({
         user: {
           email: user.email,
@@ -50,6 +62,7 @@ class UserController {
           img: user.img,
           privacy: user.privacy,
         },
+        // conversations: populated.conversations
       });
     } catch (err) {
       next(err);

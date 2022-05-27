@@ -5,6 +5,6 @@ const router = Router();
 
 router.post("/", conversationController.createConversation);
 
-router.get("/:memberId", conversationController.getConversation)
+router.get("/:email", conversationController.getConversation)
 
 module.exports = router;
